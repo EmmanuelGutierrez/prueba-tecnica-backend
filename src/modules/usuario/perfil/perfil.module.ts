@@ -1,9 +1,17 @@
 import { Module } from '@nestjs/common';
 import { PerfilService } from './perfil.service';
-import { PerfilController } from './perfil.controller';
+import { DatabaseProvider } from 'src/database/database.provider';
 
 @Module({
-  controllers: [PerfilController],
-  providers: [PerfilService],
+  providers: [
+    PerfilService,
+    {
+      provide: DatabaseProvider,
+      useFactory: () => {
+        return new DatabaseProvider('Perfiles');
+      },
+    },
+  ],
+  exports: [PerfilService],
 })
 export class PerfilModule {}
