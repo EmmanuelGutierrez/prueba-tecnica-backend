@@ -11,6 +11,7 @@ import * as bcrypt from 'bcryptjs';
 import { PerfilService } from './perfil/perfil.service';
 import { DatabaseProvider } from 'src/database/database.provider';
 import { QueryDto } from './dto/query.dto';
+import { roles } from 'src/common/enums/roles.enum';
 
 @Injectable()
 export class UsuarioService {
@@ -31,6 +32,7 @@ export class UsuarioService {
     const nuevoUsuario: Usuario = {
       ...createUsuarioDto,
       id: uuidv4(),
+      role: roles.USER,
       password: bcrypt.hashSync(password, salt),
     };
     const usuario = this.databaseProvider.create(nuevoUsuario);

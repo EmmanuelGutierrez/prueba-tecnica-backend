@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
@@ -20,6 +21,8 @@ import {
 } from '@nestjs/swagger';
 import { ErrorDto } from 'src/common/dto/Error.dto';
 import { UserDto } from './dto/user.dto';
+import { JwtAuthGuard } from '../auth/guards/auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -44,6 +47,7 @@ export class UsuarioController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RoleGuard)
   @ApiOkResponse({
     description:
       'Lista de usuarios filtrados por nombre o correo o ambos o ninguno. Si no encuntra ninguno se devuelve un array vacio',

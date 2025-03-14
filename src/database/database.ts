@@ -1,9 +1,10 @@
 import { Usuario } from 'src/modules/usuario/entities/usuario.entity';
 import * as bcrypt from 'bcryptjs';
 import { Perfil } from 'src/modules/usuario/perfil/entities/perfil.entity';
+import { roles } from 'src/common/enums/roles.enum';
 const salt = bcrypt.genSaltSync(10);
 
-export const Database = {
+export const Database: { Perfiles: Perfil[]; Usuarios: Usuario[] } = {
   Perfiles: [
     {
       id: '1',
@@ -18,6 +19,7 @@ export const Database = {
       edad: 27,
       nombre: 'Emmanuel',
       id: '1', //
+      role: roles.USER,
       password: bcrypt.hashSync('123456', salt),
     },
   ],
