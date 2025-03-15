@@ -4,6 +4,7 @@ import { CreatePerfilDto } from './dto/create-perfil.dto';
 import { DatabaseProvider } from '../../../database/database.provider';
 import { v4 as uuidv4 } from 'uuid';
 import { Perfil } from './entities/perfil.entity';
+import { UpdatePerfilDto } from './dto/update-perfil.dto';
 
 @Injectable()
 export class PerfilService {
@@ -16,6 +17,12 @@ export class PerfilService {
       id: uuidv4(),
     };
     const perfil = this.databaseProvider.create(nuevoPerfil);
+    return perfil;
+  }
+
+  update(perfilId: string, data: UpdatePerfilDto) {
+    console.log(perfilId);
+    const perfil = this.databaseProvider.updateById(perfilId, data);
     return perfil;
   }
 

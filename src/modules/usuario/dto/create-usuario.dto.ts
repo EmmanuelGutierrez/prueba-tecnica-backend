@@ -10,27 +10,32 @@ import {
 import { CreatePerfilDto } from '../perfil/dto/create-perfil.dto';
 
 export class CreateUsuarioDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'test@test.com' })
   @IsNotEmpty()
   @IsEmail()
   readonly correo_electronico!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 27 })
   @IsNotEmpty()
   @IsNumber()
   readonly edad!: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'Emmanuel' })
   @IsNotEmpty()
   @IsString()
   readonly nombre!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '123456' })
   @IsNotEmpty()
   @IsString()
   readonly password!: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: {
+      codigo: 'ASD',
+      nombre_perfil: 'Manu',
+    },
+  })
   @ValidateNested()
   @IsNotEmpty()
   @Type(() => CreatePerfilDto)

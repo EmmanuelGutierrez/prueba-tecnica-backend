@@ -76,9 +76,13 @@ export class UsuarioService {
     return { ...usuario, perfil };
   }
 
-  update(id: string, updateData: UpdateUsuarioDto) {
-    this.findOne(id);
+  update(id: string, { perfil, ...updateData }: UpdateUsuarioDto) {
+    const usuario = this.findOne(id);
+
     const updatedData = this.databaseProvider.updateById(id, updateData);
+    if (perfil) {
+      this.perfilService.update(usuario.perfil.id, perfil);
+    }
     return updatedData;
   }
 

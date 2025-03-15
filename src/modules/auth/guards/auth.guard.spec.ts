@@ -23,7 +23,7 @@ describe('JwtAuthGuard', () => {
     jwt = moduleRef.get<JwtService>(JwtService);
   });
 
-  it('should deny access', async () => {
+  it('No tendra acceso por tener un token equivocado', async () => {
     const executionContext = {
       switchToHttp: () => ({
         getRequest: () => ({
@@ -40,7 +40,24 @@ describe('JwtAuthGuard', () => {
     );
   });
 
-  it('should grant access', async () => {
+  it('No tendra acceso por no tener token', async () => {
+    const executionContext = {
+      switchToHttp: () => ({
+        getRequest: () => ({
+          user: null,
+          headers: {
+            authorization: 'Bearer ',
+          },
+        }),
+      }),
+    } as any as ExecutionContext;
+
+    await expect(guard.canActivate(executionContext)).rejects.toThrow(
+      UnauthorizedException,
+    );
+  });
+
+  it('Tendra acceso por tener un token correcto', async () => {
     const token = jwt.sign({ id: 1 });
     const executionContext = {
       switchToHttp: () => ({

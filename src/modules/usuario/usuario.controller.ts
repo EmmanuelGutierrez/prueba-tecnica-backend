@@ -16,6 +16,7 @@ import { QueryDto } from './dto/query.dto';
 import {
   ApiBadRequestResponse,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
@@ -36,7 +37,7 @@ export class UsuarioController {
     description: 'No se cumplio la verificacion de datos en el body',
     type: ErrorDto,
   })
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'Se devuelve el usuario creado',
     type: UserDto,
   })
@@ -46,7 +47,6 @@ export class UsuarioController {
   }
 
   @Get('getAll')
-  @UseGuards(JwtAuthGuard, RoleGuard) //Endpoint solo para usuarios admin que hayan hecho login
   @ApiOkResponse({
     description:
       'Lista de usuarios filtrados por nombre o correo o ambos o ninguno. Si no encuntra ninguno se devuelve un array vacio',
@@ -54,6 +54,18 @@ export class UsuarioController {
     isArray: true,
   })
   findAll(@Query() query: QueryDto) {
+    return this.usuarioService.findAll(query);
+  }
+
+  @Get('getAllSecure')
+  @UseGuards(JwtAuthGuard, RoleGuard) //Endpoint solo para usuarios admin que hayan hecho login
+  @ApiOkResponse({
+    description:
+      'Hay que hacer login en auth/login y utilizar el token para usar este endpoint. Lista de usuarios filtrados por nombre o correo o ambos o ninguno. Si no encuntra ninguno se devuelve un array vacio',
+    type: UserDto,
+    isArray: true,
+  })
+  findAllSecure(@Query() query: QueryDto) {
     return this.usuarioService.findAll(query);
   }
 

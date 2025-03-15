@@ -68,6 +68,31 @@ describe('UsuarioController', () => {
     });
   });
 
+  describe('GET - /getAllSecure', () => {
+    it('deberia devolver un array de usuarios', () => {
+      const res = controller.findAllSecure({});
+      expect(res).toBeDefined();
+      expect(res.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('deberia devolver un array filtrado por nombre', async () => {
+      const data = { nombre: 'Emmanuel' };
+      const queryData = plainToInstance(QueryDto, data);
+      const errors = await validate(queryData);
+      expect(errors.length).toEqual(0);
+      const res = controller.findAllSecure(data) as Usuario[];
+      expect(res.length).toBeGreaterThanOrEqual(1);
+      expect(res[0].nombre).toEqual(data.nombre);
+    });
+
+    it('deberia devolver un error por pasar datos que no cumplen con el dto', async () => {
+      const data = { nombre: 1 };
+      const queryData = plainToInstance(QueryDto, data);
+      const errors = await validate(queryData);
+      expect(errors.length).not.toEqual(0);
+    });
+  });
+
   describe('POST - /create', () => {
     it('deberia crear un usuario ', async () => {
       const data: CreateUsuarioDto = {
@@ -115,8 +140,8 @@ describe('UsuarioController', () => {
       };
       const bodyData = plainToInstance(UpdateUsuarioDto, data);
       const errors = await validate(bodyData);
-      expect(errors.length).toEqual(0);
       const res = controller.update('1', data);
+      expect(errors.length).toEqual(0);
       expect(res).toBeDefined();
     });
 
