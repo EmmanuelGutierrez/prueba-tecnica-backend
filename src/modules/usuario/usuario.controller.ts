@@ -19,7 +19,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { ErrorDto } from 'src/common/dto/Error.dto';
+import { ErrorDto } from '../../common/dto/Error.dto';
 import { UserDto } from './dto/user.dto';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { RoleGuard } from '../auth/guards/role.guard';
@@ -28,7 +28,6 @@ import { RoleGuard } from '../auth/guards/role.guard';
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
-  @Patch(':id')
   @ApiConflictResponse({
     description: 'Ya existe un usuario con ese correo electronico',
     type: ErrorDto,
@@ -41,13 +40,13 @@ export class UsuarioController {
     description: 'Se devuelve el usuario creado',
     type: UserDto,
   })
-  @Post()
+  @Post('create')
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuarioService.create(createUsuarioDto);
   }
 
-  @Get()
-  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Get('getAll')
+  @UseGuards(JwtAuthGuard, RoleGuard) //Endpoint solo para usuarios admin que hayan hecho login
   @ApiOkResponse({
     description:
       'Lista de usuarios filtrados por nombre o correo o ambos o ninguno. Si no encuntra ninguno se devuelve un array vacio',
@@ -58,7 +57,7 @@ export class UsuarioController {
     return this.usuarioService.findAll(query);
   }
 
-  @Get(':id')
+  @Get('getOne/:id')
   @ApiNotFoundResponse({
     description: 'Usuario no encontrado',
     type: ErrorDto,
@@ -71,7 +70,7 @@ export class UsuarioController {
     return this.usuarioService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @ApiNotFoundResponse({
     description: 'Usuario para actualizar no encontrado',
     type: ErrorDto,
@@ -96,7 +95,7 @@ export class UsuarioController {
     description:
       'Se devuelve un valor true en caso de que elusuario hay sido borrado, en caso contrario se devuelve false',
   })
-  @Delete(':id')
+  @Delete('delete/:id')
   remove(@Param('id') id: string) {
     return this.usuarioService.remove(id);
   }

@@ -9,9 +9,10 @@ import { Usuario } from './entities/usuario.entity';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { PerfilService } from './perfil/perfil.service';
-import { DatabaseProvider } from 'src/database/database.provider';
+import { DatabaseProvider } from '../../database/database.provider';
 import { QueryDto } from './dto/query.dto';
-import { roles } from 'src/common/enums/roles.enum';
+import { roles } from '../../common/enums/roles.enum';
+import { Perfil } from './perfil/entities/perfil.entity';
 
 @Injectable()
 export class UsuarioService {
@@ -35,8 +36,11 @@ export class UsuarioService {
       role: roles.USER,
       password: bcrypt.hashSync(password, salt),
     };
-    const usuario = this.databaseProvider.create(nuevoUsuario);
-    const newPerfil = this.perfilService.create(nuevoUsuario.id, perfil);
+    const usuario = this.databaseProvider.create(nuevoUsuario) as Usuario;
+    const newPerfil = this.perfilService.create(
+      nuevoUsuario.id,
+      perfil,
+    ) as Perfil;
 
     return { ...usuario, perfil: newPerfil };
   }
@@ -64,7 +68,7 @@ export class UsuarioService {
   }
 
   findOne(id: string) {
-    const usuario = this.databaseProvider.findOne({ id });
+    const usuario = this.databaseProvider.findOne({ id }) as Usuario;
     if (!usuario) {
       throw new NotFoundException('Usuario no encontrado');
     }

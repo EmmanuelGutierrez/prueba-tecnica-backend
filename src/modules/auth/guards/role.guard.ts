@@ -7,10 +7,10 @@ import {
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { roles } from 'src/common/enums/roles.enum';
-import { payload } from 'src/common/interface/payload.interface';
-import { DatabaseProvider } from 'src/database/database.provider';
-import { Usuario } from 'src/modules/usuario/entities/usuario.entity';
+import { roles } from '../../../common/enums/roles.enum';
+import { payload } from '../../../common/interface/payload.interface';
+import { DatabaseProvider } from '../../../database/database.provider';
+import { Usuario } from '../../../modules/usuario/entities/usuario.entity';
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(

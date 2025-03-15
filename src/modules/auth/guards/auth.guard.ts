@@ -5,10 +5,10 @@ import {
   CanActivate,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { IS_PUBLIC_KEY } from 'src/common/decorators/public.decorator';
+// import { IS_PUBLIC_KEY } from '../../../common/decorators/public.decorator';
 import { JwtService } from '@nestjs/jwt';
-import { jwtSecret } from 'src/common/constants/jwt.secret';
-import { payload } from 'src/common/interface/payload.interface';
+import { jwtSecret } from '../../../common/constants/jwt.secret';
+import { payload } from '../../../common/interface/payload.interface';
 import { Request } from 'express';
 
 @Injectable()
@@ -24,11 +24,11 @@ export class JwtAuthGuard implements CanActivate {
   }
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isPublic: boolean = this.reflector.get(
-      IS_PUBLIC_KEY,
-      context.getHandler(),
-    );
-    if (isPublic) return true;
+    // const isPublic: boolean = this.reflector.get(
+    //   IS_PUBLIC_KEY,
+    //   context.getHandler(),
+    // );
+    // if (isPublic) return true;
     const request: Request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {

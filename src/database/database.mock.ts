@@ -1,10 +1,8 @@
-import { Usuario } from '../modules/usuario/entities/usuario.entity';
 import * as bcrypt from 'bcryptjs';
-import { Perfil } from '../modules/usuario/perfil/entities/perfil.entity';
 import { roles } from '../common/enums/roles.enum';
-const salt = bcrypt.genSaltSync(10);
 
-export const Database: { Perfiles: Perfil[]; Usuarios: Usuario[] } = {
+const salt = bcrypt.genSaltSync(10);
+export const fakeDatabase = {
   Perfiles: [
     {
       id: '1',
@@ -24,7 +22,3 @@ export const Database: { Perfiles: Perfil[]; Usuarios: Usuario[] } = {
     },
   ],
 };
-
-export type ModelType<T extends keyof typeof Database> = T extends 'Usuarios'
-  ? Usuario
-  : Perfil;

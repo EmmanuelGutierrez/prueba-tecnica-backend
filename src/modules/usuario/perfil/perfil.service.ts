@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePerfilDto } from './dto/create-perfil.dto';
 // import { UpdatePerfilDto } from './dto/update-perfil.dto';
-import { DatabaseProvider } from 'src/database/database.provider';
+import { DatabaseProvider } from '../../../database/database.provider';
 import { v4 as uuidv4 } from 'uuid';
 import { Perfil } from './entities/perfil.entity';
 

@@ -3,7 +3,15 @@ import { Database, ModelType } from './database';
 
 @Injectable()
 export class DatabaseProvider {
-  constructor(private readonly model: keyof typeof Database) {}
+  database = Database;
+  constructor(
+    private readonly model: keyof typeof Database,
+    private readonly newDatabase?: typeof Database,
+  ) {
+    if (this.newDatabase) {
+      this.database = this.newDatabase;
+    }
+  }
 
   find({
     populateFields,
@@ -25,7 +33,7 @@ export class DatabaseProvider {
     // order?: string;
     // orderBy?: 'ASC' | 'DESC';
   }) {
-    const result = Database[this.model].filter((data) => {
+    const result = this.database[this.model].filter((data) => {
       for (const key in query) {
         if (data[key] !== query[key]) return false;
       }
@@ -45,7 +53,7 @@ export class DatabaseProvider {
       const populateResult = result.map((data) => {
         const populatedItem = { ...data };
         populateFields.forEach((populateField) => {
-          const relatedItems = Database[populateField.model].find(
+          const relatedItems = this.database[populateField.model].find(
             (relatedItem) =>
               relatedItem[populateField.foreignField] ===
               populatedItem[populateField.localField],
@@ -62,11 +70,11 @@ export class DatabaseProvider {
   }
 
   findOneById(id: string) {
-    return Database[this.model].find((data) => data.id === id);
+    return this.database[this.model].find((data) => data.id === id);
   }
 
   findOne(query: Partial<ModelType<typeof this.model>>) {
-    return Database[this.model].find((data) => {
+    return this.database[this.model].find((data) => {
       for (const key in query) {
         if (data[key] !== query[key]) return false;
       }
@@ -75,23 +83,23 @@ export class DatabaseProvider {
   }
 
   deleteById(id: string) {
-    const index = Database[this.model].findIndex(
+    const index = this.database[this.model].findIndex(
       (data: ModelType<typeof this.model>) => data.id === id,
     );
     if (index !== -1) {
-      Database[this.model].splice(index, 1);
+      this.database[this.model].splice(index, 1);
       return true;
     }
     return false;
   }
   create(newData: ModelType<typeof this.model>) {
-    (Database[this.model] as unknown as ModelType<typeof this.model>[]).push(
-      newData,
-    );
+    (
+      this.database[this.model] as unknown as ModelType<typeof this.model>[]
+    ).push(newData);
     return newData;
   }
   updateById(id: string, newData: Partial<ModelType<typeof this.model>>) {
-    const oldData = Database[this.model].find((data) => data.id === id);
+    const oldData = this.database[this.model].find((data) => data.id === id);
     if (oldData) {
       Object.assign(oldData, newData);
     }

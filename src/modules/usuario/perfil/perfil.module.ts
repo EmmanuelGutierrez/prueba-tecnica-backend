@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PerfilService } from './perfil.service';
-import { DatabaseProvider } from 'src/database/database.provider';
+import { DatabaseProvider } from '../../../database/database.provider';
 
 @Module({
   providers: [
