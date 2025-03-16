@@ -14,6 +14,9 @@ export class Usuario {
   @ApiProperty()
   role: roles;
 
-  @ApiProperty()
+  @ApiProperty({
+    description:
+      'En casos normales el password no se devuelve nunca pero en este caso se estara devolviendo en los gets',
+  })
   password: string;
 }

@@ -49,7 +49,7 @@ export class UsuarioController {
   @Get('getAll')
   @ApiOkResponse({
     description:
-      'Lista de usuarios filtrados por nombre o correo o ambos o ninguno. Si no encuntra ninguno se devuelve un array vacio',
+      'Lista de usuarios filtrados por nombre o correo o ambos. Tambien se puede filtrar por palabra clave (buscara en todos los campos si alguno contiene el conjunto de caracteres ingresado). Si no encuntra ninguno se devuelve un array vacio',
     type: UserDto,
     isArray: true,
   })

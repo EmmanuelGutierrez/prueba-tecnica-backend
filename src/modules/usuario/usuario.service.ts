@@ -46,15 +46,21 @@ export class UsuarioService {
   }
 
   findAll(queryDto: QueryDto) {
-    const query: { nombre?: string; correo_electronico?: string } = {};
-    if (queryDto.nombre) {
-      query.nombre = queryDto.nombre;
-    }
-    if (queryDto.correo) {
-      query.correo_electronico = queryDto.correo;
+    const query: {
+      nombre?: string;
+      correo_electronico?: string;
+    } = {};
+    if (!queryDto.like) {
+      if (queryDto.nombre) {
+        query.nombre = queryDto.nombre;
+      }
+      if (queryDto.correo) {
+        query.correo_electronico = queryDto.correo;
+      }
     }
     const usuarios = this.databaseProvider.find({
       query,
+      like: queryDto.like,
       populateFields: [
         {
           localField: 'id',

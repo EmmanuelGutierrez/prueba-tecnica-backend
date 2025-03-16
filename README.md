@@ -1,4 +1,3 @@
-
 ## Description
 
 Prueba tecnica backend con nest de Emmanuel Gutierrez
@@ -35,7 +34,14 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Documentacion con swagger
+
+```bash
+localhost:3000/api
+```
+
 ## Levantar con docker
+
 ```bash
 # 1-Buildear el proyecto
 $ docker build -t prueba-tecnica-backend .
@@ -44,7 +50,8 @@ $ docker build -t prueba-tecnica-backend .
 $ docker run --rm -p 3000:3000 prueba-tecnica-backend
 ```
 
-## Importante. 
+## Importante.
+
 ```bash
 # El endpoint usuario/getAllSecure hace lo mismo que usuario/getAll pero para usarlo hay que hacer login en auth/login con los siguientes datos
 {

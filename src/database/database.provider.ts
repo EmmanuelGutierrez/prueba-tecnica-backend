@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Database, ModelType } from './database';
+import { Perfil } from 'src/modules/usuario/perfil/entities/perfil.entity';
+import { Usuario } from 'src/modules/usuario/entities/usuario.entity';
 
 @Injectable()
 export class DatabaseProvider {
@@ -16,6 +18,7 @@ export class DatabaseProvider {
   find({
     populateFields,
     query,
+    like,
     // order = 'id',
     // orderBy = 'ASC',
     // limit = 3,
@@ -28,17 +31,32 @@ export class DatabaseProvider {
       foreignField: string;
       fieldName?: string;
     }[];
+    like?: string;
     // limit?: number;
     // skip?: number;
     // order?: string;
     // orderBy?: 'ASC' | 'DESC';
   }) {
-    const result = this.database[this.model].filter((data) => {
-      for (const key in query) {
-        if (data[key] !== query[key]) return false;
-      }
-      return true;
-    });
+    let result: (Usuario | Perfil)[];
+    if (like) {
+      result = this.database[this.model].filter((data) => {
+        for (const key in data) {
+          if (
+            key !== 'password' &&
+            JSON.stringify(data[key]).toLowerCase().includes(like.toLowerCase())
+          )
+            return true;
+        }
+        return false;
+      });
+    } else {
+      result = this.database[this.model].filter((data) => {
+        for (const key in query) {
+          if (data[key] !== query[key]) return false;
+        }
+        return true;
+      });
+    }
     // result.sort((a, b) =>
     //   a[order] > b[order]
     //     ? orderBy === 'ASC'
